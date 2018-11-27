@@ -5,9 +5,13 @@ Proposed migration is the process of moving things from the proposed "xyz-propos
 
 Migration is blocked so long as a package has an uninstallibility count > 0. A package that has unmet dependencies is uninstallable, and packages that depend on uninstallable packages are themselves uninstallable.
 
+Packages are also uninstallable if their autopkgtests fail, which can happen if upgrading a package breaks something in the package or packages that depend on it.
 
-Uninstallibility Example
-------------------------
+[https://wiki.ubuntu.com/ProposedMigration] explains the process.
+
+
+Package Transition Example
+--------------------------
 
 ### Assume the following fictional packages:
 
