@@ -3,7 +3,7 @@ Proposed Migration
 
 Proposed migration is the process of moving things from the proposed "xyz-proposed" pocket to the release "xyz" pocket.
 
-Migration is blocked so long as a package has an uninstallibility count > 0. A package that has unmet dependencies is uninstallable.
+Migration is blocked so long as a package has an uninstallibility count > 0. A package that has unmet dependencies is uninstallable, and packages that depend on uninstallable packages are themselves uninstallable.
 
 
 Uninstallibility Example
