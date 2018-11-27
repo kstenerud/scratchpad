@@ -3,11 +3,20 @@ Proposed Migration
 
 Proposed migration is the process of moving things from the proposed "xyz-proposed" pocket to the release "xyz" pocket.
 
-Migration is blocked so long as a package has an uninstallibility count > 0. A package that has unmet dependencies is uninstallable, and packages that depend on uninstallable packages are themselves uninstallable.
+Migration is blocked if its uninstallibility count increases as a consequence of the migration. A package that has unmet dependencies is uninstallable, and packages that depend on uninstallable packages are themselves uninstallable.
 
-Packages are also uninstallable if their autopkgtests fail, which can happen if upgrading a package breaks something in the package or packages that depend on it.
+Migration will also be blocked if a package's autopkgtests fail, which can happen if upgrading a package breaks something in the package or packages that depend on it.
 
 [https://wiki.ubuntu.com/ProposedMigration] explains the process.
+
+Dependencies
+------------
+
+There are two kinds of dependencies: source and binary.
+
+Due to how the system architecture, multiple source package version can exist, but only one binary package may exist across all versions. To get around this limitation, we append a version number to shared object name (e.g. `libjpeg3`).
+
+The proposed pocket is a staging area that is overlaid on top of release.
 
 
 Package Transition Example
@@ -38,7 +47,7 @@ When package `src:imageviewer 8.4` is built, packaging tools pick up on this (vi
 The following packages exist:
 
  * Package `src:jpegtools 1.0`.
- * Package `src:imageviewer 8.4`, which depends on `libjpeg1` and `libjpeg-dev`.
+ * Package `src:imageviewer 8.4`, which has a build dependency on `libjpeg-dev`.
  * Package `libjpeg1 1.0`.
  * Package `libjpeg-dev 1.0`, which depends on `libjpeg1`.
  * Package `imageviewer 8.4`, which depends on `libjpeg1`.
@@ -69,7 +78,7 @@ Assume that 2.0 only introduces new API calls. The existing API works as before 
 The following packages exist:
 
  * Package `src:jpegtools 2.0`.
- * Package `src:imageviewer 8.4`, which depends on `libjpeg2` and `libjpeg-dev`.
+ * Package `src:imageviewer 8.4`, which has a build dependency on `libjpeg-dev`.
  * Package `libjpeg1 1.0`.
  * Package `libjpeg2 2.0`.
  * Package `libjpeg-dev 2.0`, which depends on `libjpeg2`.
@@ -100,7 +109,7 @@ Note: You update the version of imageviewer using `dch --rebuild`
 Now, the following packages exist:
 
  * Package `src:jpegtools 2.0`.
- * Package `src:imageviewer 8.4ubuntu1`, which depends on `libjpeg2` and `libjpeg-dev`.
+ * Package `src:imageviewer 8.4ubuntu1`, which has a build dependency on `libjpeg-dev`.
  * Package `libjpeg2 2.0`.
  * Package `libjpeg-dev 2.0`, which depends on `libjpeg2`.
  * Package `imageviewer 8.4ubuntu1`, which depends on `libjpeg2`.
@@ -111,4 +120,3 @@ The system has the following files:
  * `/usr/include/jpeg.h`
  * `/usr/lib/libjpeg.so -> /usr/lib/libjpeg.so.2`
  * `/usr/local/bin/imageviewer`
-
